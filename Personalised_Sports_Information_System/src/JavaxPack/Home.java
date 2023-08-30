@@ -15,6 +15,12 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 
 public class Home extends JFrame {
 
@@ -43,8 +49,9 @@ public class Home extends JFrame {
 	 */
 	public Home() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 600);
+		setBounds(100, 100, 1000, 1000);
 		contentPane = new JPanel();
+		contentPane.setForeground(new Color(0, 0, 0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -67,27 +74,37 @@ public class Home extends JFrame {
 		
 		JLabel lblNewLabel_3 = new JLabel("Enter you Height (m) : ");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
-		lblNewLabel_3.setBounds(31, 320, 205, 28);
+		lblNewLabel_3.setBounds(31, 448, 205, 28);
 		contentPane.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("Enter your Weight (kg) : ");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
-		lblNewLabel_4.setBounds(31, 258, 205, 28);
+		lblNewLabel_4.setBounds(31, 396, 205, 28);
 		contentPane.add(lblNewLabel_4);
 		
 		height = new JTextField();
-		height.setBounds(246, 323, 122, 28);
+		height.setBounds(257, 451, 122, 28);
 		contentPane.add(height);
 		height.setColumns(10);
 		
 		weight = new JTextField();
-		weight.setBounds(246, 261, 119, 28);
+		weight.setBounds(260, 399, 119, 28);
 		contentPane.add(weight);
 		weight.setColumns(10);
 		
+		JTextPane textPane = new JTextPane();
+		textPane.setFont(new Font("STXihei", Font.PLAIN, 16));
+		textPane.setBounds(190, 201, 483, 100);
+		String bmiRange = "Below 18.5 – You're in the underweight range\n"
+                + "Between 18.5 and 24.9 – You're in the healthy weight range\n"
+                + "Between 25 and 29.9 – You're in the overweight range\n"
+                + "30 or over – You're in the obese range";
+		textPane.setText(bmiRange);
+		contentPane.add(textPane);
+		
 		JLabel lblNewLabel_5 = new JLabel("LET'S CALCULATE YOUR BMI");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_5.setBounds(73, 197, 232, 50);
+		lblNewLabel_5.setBounds(72, 327, 232, 50);
 		contentPane.add(lblNewLabel_5);
 		
 		final Bmi calcBmi = new Bmi();
@@ -95,20 +112,42 @@ public class Home extends JFrame {
 	
 		final JLabel bmi = new JLabel("");
 		bmi.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		bmi.setBounds(31, 451, 774, 36);
+		bmi.setBounds(10, 562, 774, 36);
 		contentPane.add(bmi);
 		
 		JButton btnNewButton = new JButton("Get BMI");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {              // action when "get bmi" button is clicked
+				
 				double w = Double.parseDouble(weight.getText());
 				double h = Double.parseDouble(height.getText());
-				bmi.setText("Your BMI is : " + calcBmi.getBmi(w, h));
+				double finalBmi = calcBmi.getBmi(w, h);
+				bmi.setText("Your BMI is : " + finalBmi);
+				
+				/*
+				 * JTextPane bmiRec = new JTextPane(); bmiRec.setFont(new Font("STXihei",
+				 * Font.PLAIN, 16)); bmiRec.setBounds(31, 497, 483, 100);
+				 * contentPane.add(bmiRec);
+				 */
+				
+				JTextPane bmiRec = new JTextPane();
+				bmiRec.setFont(new Font("Monospaced", Font.BOLD, 16));
+				bmiRec.setBounds(72,634,483,140);
+				String bmiRecommendation = calcBmi.getRecommendations(finalBmi);
+				bmiRec.setText(bmiRecommendation);
+				contentPane.add(bmiRec);
+				
+				
+				
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewButton.setBounds(135, 397, 131, 28);
+		btnNewButton.setBounds(126, 506, 131, 28);
 		contentPane.add(btnNewButton);
+		
+		
+		
+		
+		
 	}
-
 }
