@@ -19,10 +19,11 @@ public class Bmi {
 	}
 	
 	public String getRecommendations(double bmi) {
-        StringBuilder recommendations = new StringBuilder("Recommendations based on BMI:\n");
+        StringBuilder recommendations = new StringBuilder("Recommendations based on BMI:\n").append("------------------------------\n");
 
         if (bmi < 18.5) {
             recommendations.append("BMI Category: Underweight\n")
+            			  
                           .append("Diet Recommendation: Consume nutrient-rich foods and increase calorie intake.\n")
                           .append("Exercise Recommendation: Focus on strength-building exercises and balanced cardio.");
         } else if (bmi < 24.9) {
